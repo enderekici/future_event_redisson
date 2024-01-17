@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="30" shutdownHook="disable">
+    <Properties>
+        <Property name="log-path">${sys:user.dir}/logs</Property>
+        <Property name="archive-log-path">${log-path}/archive</Property>
+        <Property name="log-name">future-event</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console-Appender" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>[%-5level] %d{dd/MM/yyyy HH:mm:ss.SSS} [%t] [%M] %clr{%-20.70c} - %msg%n</pattern>
+            </PatternLayout>
+        </Console>
+        <RollingFile name="RollingFile" fileName="${log-path}/${log-name}.log"
+                     filePattern="${archive-log-path}/${log-name}.%d{yyyy-MM-dd}_%i.log.gz">
+            <PatternLayout>
+                <pattern>[%-5level] %d{dd/MM/yyyy HH:mm:ss.SSS} [%t] [%M] %clr{%-20.70c} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="1GB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="Console-Appender"/>
+        </Root>
+    </Loggers>
+</Configuration>
